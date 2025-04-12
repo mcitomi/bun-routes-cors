@@ -1,5 +1,11 @@
 # bun-routes-cors
 
+<img src="https://i.imgur.com/ixmnz4M.png" alt="drawing" width="60" style="float: right;"/>
+
+### CORS for the built-in routing (Bun.serve()):
+
+A CORS module for the built-in router, which released in Bun version 1.2.3!
+
 ## 🚀 Installation
 ```
 bun i bun-routes-cors
@@ -54,3 +60,5 @@ new Response(null, {
 ```
 
 🍞 Official Docs: https://bun.sh/docs/api/http#bun-serve
+
+Supports all request types described in the docs!

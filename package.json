@@ -1,9 +1,11 @@
 {
   "name": "bun-routes-cors",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "index.ts",
   "keywords": [
     "bun-cors",
+    "bun.js",
+    "bun.ts",
     "bun-cors-headers",
     "bun-router",
     "bun-cross-origin",
