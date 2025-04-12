@@ -1,0 +1,14 @@
+{
+  "name": "bun-routes-cors",
+  "version": "0.1.0",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "mcitomi",
+  "license": "ISC",
+  "description": "Add basic or custom CORS headers to Bun routes",
+  "devDependencies": {
+    "@types/bun": "^1.2.9",
+    "@types/node": "^22.14.0",
+    "typescript": "^5.8.3"
+  }
+}
