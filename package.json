@@ -1,8 +1,17 @@
 {
   "name": "bun-routes-cors",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "index.ts",
-  "keywords": [],
+  "keywords": [
+    "bun-cors",
+    "bun-cors-headers",
+    "bun-router",
+    "bun-cross-origin",
+    "cors",
+    "bun",
+    "bun cors",
+    "bun router cors"
+  ],
   "author": "mcitomi",
   "license": "ISC",
   "description": "Add basic or custom CORS headers to Bun routes",
@@ -10,5 +19,17 @@
     "@types/bun": "^1.2.9",
     "@types/node": "^22.14.0",
     "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcitomi/bun-routes-cors"
+  },
+  "bugs": {
+    "url": "https://github.com/mcitomi/bun-routes-cors/issues",
+    "email": "admin@mcitomi.hu"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://revolut.me/mcitomi"
   }
 }

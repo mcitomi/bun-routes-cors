@@ -1,6 +1,12 @@
 # bun-routes-cors
 
-## Code example:
+## 🚀 Installation
+```
+bun i bun-routes-cors
+```
+⚠️ Do not use "npm i"
+
+## 🧪 Code example:
 
 ```js
 import CORS from "bun-routes-cors";
@@ -28,6 +34,21 @@ Bun.serve({
                 // to use req params pass type to "req" like this
             }
         }
+    }, {    // optional: set your custom headers, these are the default values:
+        origin: "*",  // 'yoursite.com'
+        methods: "*", // 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'
+        headers: "*" // 'Content-Type', 'Authorization'
     })
+});
+```
+Passing the second object is optional; if you don't specify the origin, methods, and headers values, everything is passed by default.
+
+### 🪶 Preflight
+
+It also handles "preflight" requests, returning CORS headers you specify or implicitly, a null response value, and a 204 status.
+```js
+new Response(null, {
+    status: 204,
+    headers: ...,
 });
 ```
