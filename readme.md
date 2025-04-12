@@ -52,3 +52,5 @@ new Response(null, {
     headers: ...,
 });
 ```
+
+🍞 Official Docs: https://bun.sh/docs/api/http#bun-serve
