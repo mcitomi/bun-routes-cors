@@ -92,6 +92,7 @@ export default function CORS(routes: Routes, options: CorsOptions = {}): Routes 
         if (typeof original === "function") {   // route handler function
             wrappedRoutes[path] = async (req: Bun.BunRequest<string>) => {
                 const res = await original(req);
+                if(!res) throw new Error("Response not specified");
                 for (const [key, value] of Object.entries(corsHeaders)) {
                     res.headers.set(key, value);
                 }
@@ -121,6 +122,7 @@ export default function CORS(routes: Routes, options: CorsOptions = {}): Routes 
                     const typedMethod = method as HTTPMethod;
                     wrappedRoutes[path][typedMethod] = async (req: Bun.BunRequest<string>) => { // string path, like </asd/:id>
                         const res = await handler!(req);
+                        if(!res) throw new Error("Response not specified");
                         for (const [key, value] of Object.entries(corsHeaders)) {
                             res.headers.set(key, value);
                         }
