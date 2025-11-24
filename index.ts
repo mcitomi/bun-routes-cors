@@ -1,7 +1,9 @@
-// Bun Router CORS v0.2
+// Bun Router CORS v0.2.4
 // Supports all docs described response https://bun.sh/docs/api/http#bun-serve
 // by: mcitomi ~ www.mcitomi.hu ~ dc.mcitomi.hu
 // 💫📨🪶
+
+import { HTMLBundle } from "bun";
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD';
 
@@ -11,6 +13,7 @@ type RouteHandler<Path extends string> = (req: Bun.BunRequest<Path>) => Response
 
 type Route<Path extends string> =
     | RouteHandler<Path>
+    | HTMLBundle
     | { [M in HTTPMethod]?: RouteHandler<Path> }
     | Response;
 
@@ -92,7 +95,7 @@ export default function CORS(routes: Routes, options: CorsOptions = {}): Routes 
         if (typeof original === "function") {   // route handler function
             wrappedRoutes[path] = async (req: Bun.BunRequest<string>) => {
                 const res = await original(req);
-                if(!res) throw new Error("Response not specified");
+                if (!res) throw new Error("Response not specified");
                 for (const [key, value] of Object.entries(corsHeaders)) {
                     res.headers.set(key, value);
                 }
@@ -115,19 +118,39 @@ export default function CORS(routes: Routes, options: CorsOptions = {}): Routes 
             };
 
         } else if (typeof original === "object" && original !== null) { // res objects with method
-            wrappedRoutes[path] = {};
+            if (original.toString() === "[object HTMLBundle]") {    // html file serve
+                const filePath = (original as any).index;
 
-            for (const [method, handler] of Object.entries(original)) {
-                if (allowedMethods.includes(method as HTTPMethod)) {
-                    const typedMethod = method as HTTPMethod;
-                    wrappedRoutes[path][typedMethod] = async (req: Bun.BunRequest<string>) => { // string path, like </asd/:id>
-                        const res = await handler!(req);
-                        if(!res) throw new Error("Response not specified");
+                wrappedRoutes[path] = {
+                    GET: async () => {
+                        const file = Bun.file(filePath);
+
+                        const res = new Response(file, {
+                            headers: {
+                                "Content-Type": "text/html; charset=utf-8"
+                            }
+                        });
+
                         for (const [key, value] of Object.entries(corsHeaders)) {
                             res.headers.set(key, value);
                         }
                         return res;
-                    };
+                    }
+                };
+            } else {
+                wrappedRoutes[path] = {};
+                for (const [method, handler] of Object.entries(original)) {
+                    if (allowedMethods.includes(method as HTTPMethod)) {
+                        const typedMethod = method as HTTPMethod;
+                        wrappedRoutes[path][typedMethod] = async (req: Bun.BunRequest<string>) => { // string path, like </asd/:id>
+                            const res = await handler!(req);
+                            if (!res) throw new Error("Response not specified");
+                            for (const [key, value] of Object.entries(corsHeaders)) {
+                                res.headers.set(key, value);
+                            }
+                            return res;
+                        };
+                    }
                 }
             }
 
@@ -137,7 +160,8 @@ export default function CORS(routes: Routes, options: CorsOptions = {}): Routes 
                     new Response(null, {
                         status: 204,
                         headers: corsHeaders,
-                    });
+                    }
+                );
             }
         }
     }
